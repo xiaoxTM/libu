@@ -278,7 +278,19 @@ namespace u {
         static void print(T msg, unsigned short flag = (u::D | 0x7F00)) {
             if (!opened() || masked(flag))
                 return;
-            if ((flag & u::D) == u::D) {
+            if ((flag & (u::F | u::T)) == (u::T | u::F)) { // output to both term and file
+                if (_ofs.is_open())
+                    _ofs << msg;
+                std::cout << msg;
+                if ((flag & u::FLUSH) == u::FLUSH)
+                    std::cout << std::flush;
+            } else if ((flag & u::F) == u::F && _ofs.is_open()) { // output to file only
+                _ofs << msg;
+            } else if ((flag & u::T) == u::T) { // output to term only
+                std::cout << msg;
+                if ((flag & u::FLUSH) == u::FLUSH)
+                    std::cout << std::flush;
+            } else { // output to default, which is set when open log
                 if ((_flag & (u::F | u::T)) == (u::F | u::T)) {
                     _ofs << msg;
                     std::cout << msg;
@@ -295,18 +307,6 @@ namespace u {
                         std::cout << std::flush;
                     }
                 }
-            } else if ((flag & (u::F | u::T)) == (u::T | u::F)) {
-                if (_ofs.is_open())
-                    _ofs << msg;
-                std::cout << msg;
-                if ((flag & u::FLUSH) == u::FLUSH)
-                    std::cout << std::flush;
-            } else if ((flag & u::F) == u::F && _ofs.is_open()) {
-                _ofs << msg;
-            } else if ((flag & u::T) == u::T) {
-                std::cout << msg;
-                if ((flag & u::FLUSH) == u::FLUSH)
-                    std::cout << std::flush;
             }
         }
 
