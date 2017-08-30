@@ -1,0 +1,12 @@
+/*
+ * File:   u-string-system.hpp
+ * Author: xiaox
+ *
+ * Created on 2014/06/22, 17:30
+ */
+
+#ifndef __U_STRING_HPP__
+
+#include "inc/u-string.hpp"
+
+#endif	/* U_STRING_SYSTEM_HPP */

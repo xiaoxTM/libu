@@ -1,0 +1,5 @@
+#ifndef __U_DICT_HPP__
+
+#include "inc/u-dict.hpp"
+
+#endif

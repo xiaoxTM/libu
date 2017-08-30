@@ -1,0 +1,5 @@
+#ifndef __U_VERSION__
+
+#include "inc/u-version.hpp"
+
+#endif

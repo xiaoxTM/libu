@@ -1,0 +1,5 @@
+#ifndef __U_LOG_HPP__
+
+#include "inc/u-log.hpp"
+
+#endif
