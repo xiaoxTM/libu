@@ -1,9 +1,9 @@
 # libu
 a minimal tools for linux based (g++, c++11) 
 
-# example [u-options.hpp] of usage
+# example [u-options] of usage
 ```cpp
-#include <libu/u-options.hpp>
+#include <libu/u-options>
 
 int main(int argc, char *argv[]) {
     char *source = NULL;
