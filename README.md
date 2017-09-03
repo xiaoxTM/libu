@@ -2,7 +2,7 @@
 a minimal tools for linux based (g++, c++11) 
 
 # example [u-options.hpp] of usage
-```
+```cpp
 #include <libu/u-options.hpp>
 
 int main(int argc, char *argv[]) {
