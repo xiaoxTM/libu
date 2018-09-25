@@ -94,8 +94,7 @@ namespace u {
 
             bool _option_validate(const char* type_, const char *default_) {
                 assert(type_ != NULL);
-                assert(default_ != NULL);
-
+                assert(default_ != NULL); 
                 int index = get_entry_index(type_);
                 return (index == -1 ? false : ((transfer[index].first)(default_)));
             }
@@ -127,6 +126,50 @@ namespace u {
                 value(default_);
             }
 
+	    static const char *type2string(char type_) {
+                return "char";
+	    }
+
+	    static const char *type2string(bool type_) {
+                return "bool";
+	    }
+
+	    static const char *type2string(short type_) {
+                return "short";
+	    }
+
+	    static const char *type2string(unsigned short type_) {
+                return "ushort";
+	    }
+
+	    static const char *type2string(int type_) {
+                return "int";
+	    }
+
+	    static const char *type2string(unsigned int type_) {
+                return "uint";
+	    }
+
+	    static const char *type2string(long type_) {
+                return "long";
+	    }
+
+	    static const char *type2string(unsigned long type_) {
+                return "ulong";
+	    }
+
+	    static const char *type2string(float type_) {
+                return "float";
+	    }
+
+	    static const char *type2string(double type_) {
+                return "double";
+	    }
+
+	    static const char *type2string(char * type_) {
+                return "string";
+	    }
+
         public:
 
             void release() {
@@ -142,6 +185,12 @@ namespace u {
                 entry *ret = new entry(reinterpret_cast<char *> (vname_), type_, long_, short_, default_, description_);
                 return ret;
             }
+
+	    template <typename T>
+            static entry * create(T* vname_, const char* long_, 
+	            const char *short_, T default_, const char *description_=NULL) {
+                return create<T>(vname_, type2string(*vname_), long_, short_, u::string::to_string<T>(default_), description_);
+	    }
 
             ~entry() {
                 release();

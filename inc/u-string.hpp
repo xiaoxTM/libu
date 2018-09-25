@@ -181,45 +181,45 @@ namespace u {
             }
         }
 
-        static void free(std::vector<char *> &strings) {
-            for (size_t i=0; i<strings.size(); ++i) {
-                u::string::free(&(strings[i]));
-            }
-        }
-
-        static void free(const std::vector<char **> &strings) {
-            for (char ** string : strings) {
-                u::string::free(string);
-            }
-        }
-
+//        static void free(std::vector<char *> &strings) {
+//            for (size_t i=0; i<strings.size(); ++i) {
+//                u::string::free(&(strings[i]));
+//            }
+//        }
+//
+//        static void free(const std::vector<char **> &strings) {
+//            for (char ** string : strings) {
+//                u::string::free(string);
+//            }
+//        }
+//
         /**
         ** Function  -- free a string array, any string will not be deal with
         ** Parameters:
         **           -- strings: string array to be released
         ***/
-        static void vfree(char***strings) {
-            if (strings != NULL && (*strings) != NULL) {
-                int size = sizeof (strings) / sizeof (strings[0]);
-                for (int i = 0; i < size; ++i) {
-                    free(strings[i]);
-                }
-                delete [] (*strings);
-                (*strings) = NULL;
-            }
-        }
-
-        static void vfree(std::vector<char **> &strings) {
-            for (char **&string : strings)
-            vfree(&string);
-        }
-
-        static void vfree(const std::vector<char***> &strings) {
-            for(char ***string :  strings) {
-                vfree(string);
-            }
-        }
-
+//        static void vfree(char***strings) {
+//            if (strings != NULL && (*strings) != NULL) {
+//                int size = sizeof (strings) / sizeof (strings[0]);
+//                for (int i = 0; i < size; ++i) {
+//                    free(strings[i]);
+//                }
+//                delete [] (*strings);
+//                (*strings) = NULL;
+//            }
+//        }
+//
+//        static void vfree(std::vector<char **> &strings) {
+//            for (char **&string : strings)
+//            vfree(&string);
+//        }
+//
+//        static void vfree(const std::vector<char***> &strings) {
+//            for(char ***string :  strings) {
+//                vfree(string);
+//            }
+//        }
+//
         /**
         ** Function  -- remove a given spliter in a string for the given piosition
         ** Parameters:
@@ -230,41 +230,41 @@ namespace u {
         **                    u::S for the suffix of @string
         ** Return    -- the number of @spliter have be removed
         ***/
-        static size_t trim(char *string, unsigned char spliter, unsigned char flag = u::P | u::S) {
-            assert(string != NULL);
-            int total = 0;
-            if ((flag & u::S) == u::S) {
-                size_t size = strlen(string);
-                while (size > 0 && string[size - 1] == spliter) {
-                    ++total;
-                    string[size - 1] = '\0';
-                    --size;
-                }
-            }
-            if ((flag & u::P) == u::P) {
-                size_t size = strlen(string);
-                size_t i = 0;
-                size_t prefix = 0;
-                while (i < size && string[i] == spliter) {
-                    ++prefix;
-                    ++i;
-                }
-                if (prefix != 0) {
-                    i = 0;
-                    total += prefix;
-                    size_t valiable = size - prefix;
-
-                    while (valiable > 0) {
-                        string[i] = string[i + prefix];
-                        ++i;
-                        --valiable;
-                    }
-                    string[size - prefix] = '\0';
-                }
-            }
-            return total;
-        }
-
+//        static size_t trim(char *string, unsigned char spliter, unsigned char flag = u::P | u::S) {
+//            assert(string != NULL);
+//            int total = 0;
+//            if ((flag & u::S) == u::S) {
+//                size_t size = strlen(string);
+//                while (size > 0 && string[size - 1] == spliter) {
+//                    ++total;
+//                    string[size - 1] = '\0';
+//                    --size;
+//                }
+//            }
+//            if ((flag & u::P) == u::P) {
+//                size_t size = strlen(string);
+//                size_t i = 0;
+//                size_t prefix = 0;
+//                while (i < size && string[i] == spliter) {
+//                    ++prefix;
+//                    ++i;
+//                }
+//                if (prefix != 0) {
+//                    i = 0;
+//                    total += prefix;
+//                    size_t valiable = size - prefix;
+//
+//                    while (valiable > 0) {
+//                        string[i] = string[i + prefix];
+//                        ++i;
+//                        --valiable;
+//                    }
+//                    string[size - prefix] = '\0';
+//                }
+//            }
+//            return total;
+//        }
+//
         /**
         ** Function  -- remove a given spliter in a const string for the given piosition
         ** Parameters:
@@ -276,39 +276,39 @@ namespace u {
         ** Return    -- a new string that @spliter has been removed, if no @spliter removed
         **                    new @string will be returned
         ***/
-        static char *trim(const std::string &string, unsigned char spliter, unsigned char flag = u::P | u::S) {
-            char *dup = u::string::dup(string);
-            if (dup != NULL) {
-                size_t total = u::string::trim(dup, spliter, flag);
-                if (total == string.size()) {// if all characters in string are @spliter
-                    u::string::free(&dup);
-                }
-            }
-            return dup;
-        }
-
-        static char *lower(const std::string &string) {
-            size_t len = string.size();
-            std::string ret(string);
-            for (size_t i = 0; i < len; ++i) {
-                if (isalpha(string[i])) {
-                    ret[i] = static_cast<char> (tolower(string[i]));
-                }
-            }
-            return u::string::dup(ret);
-        }
-
-        static char *upper(const std::string &string) {
-            size_t len = string.size();
-            std::string ret(string);
-            for (size_t i = 0; i < len; ++i) {
-                if (isalpha(string[i])) {
-                    ret[i] = static_cast<char> (toupper(string[i]));
-                }
-            }
-            return u::string::dup(ret);
-        }
-
+//        static char *trim(const std::string &string, unsigned char spliter, unsigned char flag = u::P | u::S) {
+//            char *dup = u::string::dup(string);
+//            if (dup != NULL) {
+//                size_t total = u::string::trim(dup, spliter, flag);
+//                if (total == string.size()) {// if all characters in string are @spliter
+//                    u::string::free(&dup);
+//                }
+//            }
+//            return dup;
+//        }
+//
+//        static char *lower(const std::string &string) {
+//            size_t len = string.size();
+//            std::string ret(string);
+//            for (size_t i = 0; i < len; ++i) {
+//                if (isalpha(string[i])) {
+//                    ret[i] = static_cast<char> (tolower(string[i]));
+//                }
+//            }
+//            return u::string::dup(ret);
+//        }
+//
+//        static char *upper(const std::string &string) {
+//            size_t len = string.size();
+//            std::string ret(string);
+//            for (size_t i = 0; i < len; ++i) {
+//                if (isalpha(string[i])) {
+//                    ret[i] = static_cast<char> (toupper(string[i]));
+//                }
+//            }
+//            return u::string::dup(ret);
+//        }
+//
         /**
         ** Function  -- convert string to a given data type
         ** Parameters:
@@ -436,7 +436,7 @@ namespace u {
             }
         }
 
-        /*check whether @name ends with @suffix*/
+      /*check whether @name ends with @suffix*/
         static bool end_with(const std::string &filename, const std::string &suffix, bool ignore) {
             bool ret = false;
             long sub_len = static_cast<long> (filename.size()) - static_cast<long> (suffix.size());
@@ -452,7 +452,7 @@ namespace u {
             return ret;
         }
 
-        /*check whether @name begins with @prefix*/
+      /*check whether @name begins with @prefix*/
         static bool begin_with(const std::string &filename, const std::string &prefix, bool ignore) {
             bool ret = false;
             long len = static_cast<long> (filename.size()) - static_cast<long> (prefix.size());
@@ -490,7 +490,7 @@ namespace u {
             return ret;
         }
 
-        /*split @name to pieces with max numbers @num if @num not equal to -1 by @spliter*/
+       /*split @name to pieces with max numbers @num if @num not equal to -1 by @spliter*/
         /*NOTE that T should either ``char *'' or ``std::string'' */
         template <typename T = char *>
         static std::vector<T> split(const std::string &name, const std::string &spliter = SYSTEM_PATH_SEPARATOR, int num = -1) {
