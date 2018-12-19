@@ -29,6 +29,7 @@
 #include <mutex>
 #include <condition_variable>
 #include <cassert>
+#include <functional>
 #include "u-base.hpp"
 
 namespace u {
