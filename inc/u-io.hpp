@@ -181,7 +181,7 @@ namespace u {
         ofs.write(reinterpret_cast<const char*>(data), sizeof(T)*size);
         return ret;
       }
-    }
+    };
 
     /*
      *@function write: write binary to file @filename
@@ -215,7 +215,7 @@ namespace u {
     public:
       bool operator()(std::ifstream &ifs, T *data, int size) {
         assert(size > 0);
-        bool ret = true
+        bool ret = true;
         ifs.read(reinterpret_cast<char*>(data), sizeof(T)*size);
         return ret;
       }
@@ -229,7 +229,7 @@ namespace u {
         if (!ifs.fail()) {
           if (size > 0) {
             data = new T[size];
-            assert(reader(ifs, reinterpret_cast<char*>(data), sizeof(T)*size))
+            assert(reader(ifs, reinterpret_cast<char*>(data), sizeof(T)*size));
             ret = size;
           } else {
             std::vector<T> vdata;
