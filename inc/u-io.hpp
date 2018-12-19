@@ -74,6 +74,7 @@ namespace u {
           }
           ret = true;
         }
+        ifs.close();
       }
       return ret;
     }
@@ -155,6 +156,7 @@ namespace u {
         }
         ret = true;
       }
+      ifs.close();
     }
     return ret;
   }
