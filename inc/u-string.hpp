@@ -380,7 +380,7 @@ namespace u {
         }
 
         static bool validate_bool(const std::string &value) {
-            return (value == "true" || value == "false" || value == "on" || value == "off" || value == "yes" || value == "no");
+            return (value == "0" || value == "1" || value == "true" || value == "false" || value == "on" || value == "off" || value == "yes" || value == "no");
         }
 
         static bool validate_int(const std::string &value) {
