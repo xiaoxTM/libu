@@ -94,7 +94,7 @@ namespace u {
 
             bool _option_validate(const char* type_, const char *default_) {
                 assert(type_ != NULL);
-                assert(default_ != NULL); 
+                assert(default_ != NULL);
                 int index = get_entry_index(type_);
                 return (index == -1 ? false : ((transfer[index].first)(default_)));
             }
@@ -179,18 +179,18 @@ namespace u {
             }
 
             template <typename T>
-            static entry * create(T* vname_, const char* type_,
+            static entry * build(T* vname_, const char* type_,
                     const char* long_, const char* short_, const char* default_, const char *description_ = NULL) {
                 assert(type_ != NULL && (short_ != NULL || long_ != NULL));
                 entry *ret = new entry(reinterpret_cast<char *> (vname_), type_, long_, short_, default_, description_);
                 return ret;
             }
 
-	    template <typename T>
-            static entry * create(T* vname_, const char* long_, 
+	        template <typename T>
+            static entry * create(T* vname_, const char* long_,
 	            const char *short_, T default_, const char *description_=NULL) {
-                return create<T>(vname_, type2string(*vname_), long_, short_, u::string::to_string<T>(default_), description_);
-	    }
+                return build<T>(vname_, type2string(*vname_), long_, short_, u::string::to_string<T>(default_), description_);
+	        }
 
             ~entry() {
                 release();
