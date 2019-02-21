@@ -304,6 +304,7 @@ namespace u {
                 }
 
                 u::log::term(0, 0, "%s", message);
+		if (ith == total) u::log::term(0, 0, "\n");
                 u::string::free(&_format);
                 u::string::free(&message);
 	        }
