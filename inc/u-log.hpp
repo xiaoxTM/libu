@@ -62,21 +62,6 @@ namespace u {
     template<typename static_members>
     char log_static_holder<static_members>::_fill;
 
-    /**
-     *                    |-- FLUSH flag: enable flush stream after each printing
-     * _flag: 00000000 00000000
-     *        |-------     ||||_ Default flag
-     *        |||||||      |||__ File flag: logging to file @_filename instead of terminal
-     *        |||||||      ||___ Term flag: print message to terminal
-     *        |||||||      |____ Log open flag: record whether log system is opened or not
-     *        |||||||- Mode flag : Model flag, if set, print flag compared by bit, else by relation
-     *        ||||||- Pring flag : print level flag, that is, message will be printed only if corresponding bit is set
-     *        |||||- DEBUG flag
-     *        ||||- INFO flag
-     *        |||- WARNING flag
-     *        ||- ERROR flag
-     *        |- FATAL flag
-    **/
     class log : public log_static_holder<void> {
     private:
         static bool masked(unsigned short flag) {
@@ -256,7 +241,7 @@ namespace u {
 	    if (masked(level))
 	        return;
             assert(num != 0 && total != 0);
-	        if (format != nullptr) {
+            if (format != nullptr) {
                 char * msg = nullptr;
                 va_list arg_list;
                 va_start(arg_list, format);
@@ -307,7 +292,7 @@ namespace u {
 		if (ith == total) u::log::term(0, 0, "\n");
                 u::string::free(&_format);
                 u::string::free(&message);
-	        }
+	    }
         }
 
         ~log() {
@@ -367,7 +352,7 @@ namespace u {
             return std::cout;
         }
 
-	    template <unsigned short flag = (u::D | 0x7F00)>
+        template <unsigned short flag = (u::D | 0x7F00)>
         static std::ostream& indent(int bspace, int aspace, const char *format, ...) {
             if (opened() && !masked(flag) && format != nullptr) {
                 char *format_msg = nullptr;
@@ -397,7 +382,7 @@ namespace u {
             return std::cout;
         }
 
-	    template <unsigned short flag = (u::D | 0x7F00)>
+        template <unsigned short flag = (u::D | 0x7F00)>
         static std::ostream& indent(int space, const char *format, ...) {
             if (opened() && !masked(flag) && format != nullptr) {
                 char *format_msg = nullptr;
@@ -427,7 +412,7 @@ namespace u {
             return std::cout;
         }
 
-	    template <unsigned short flag = (u::D | 0x7F00)>
+        template <unsigned short flag = (u::D | 0x7F00)>
         static std::ostream& indent(const char *format, ...) {
             if (opened() && !masked(flag) && format != nullptr) {
                 char *format_msg = nullptr;
@@ -444,7 +429,7 @@ namespace u {
             return std::cout;
         }
 
-	    template <unsigned short flag = (u::D | 0x7F00)>
+        template <unsigned short flag = (u::D | 0x7F00)>
         static void indent(int spaces) {
             if (opened() && !masked(flag)) {
                 _indent += spaces;
@@ -461,11 +446,11 @@ namespace u {
                 va_start(arg_list, format);
                 format_msg = u::va_format(format, arg_list);
                 va_end(arg_list);
-                std::string msg(u::format("[%s D] => ", now().c_str()));
+                std::string msg(u::string::styled_string(u::format("[%s D] => ", now().c_str()), u::string::fore_magenta));
                 msg.append(_indent, _fill);
                 msg.append(format_msg);
                 msg.append("\n");
-                print(msg.c_str(), (u::D|0x8000));
+                print(msg, (u::D|0x8000));
             }
             return std::cout;
         }
@@ -477,7 +462,7 @@ namespace u {
                 va_start(arg_list, format);
                 format_msg = u::va_format(format, arg_list);
                 va_end(arg_list);
-                std::string msg(u::format("[%s D] => ", now().c_str()));
+                std::string msg(u::string::styled_string(u::format("[%s D] => ", now().c_str()), u::string::fore_magenta));
                 if (bspace >= 0) {
                     _indent += bspace;
                     if (_indent < 0) {
@@ -488,7 +473,7 @@ namespace u {
                 }
                 msg.append(format_msg);
                 msg.append("\n");
-                print(msg.c_str(), (u::D|0x8000));
+                print(msg, (u::D|0x8000));
                 if (aspace < 0) {
                     _indent += aspace;
                     if (_indent < 0) {
@@ -506,7 +491,7 @@ namespace u {
         template <unsigned short flag = (u::D | 0x7F00)>
         static std::ostream& info(const char* format, ...) {
             if (opened() && format != nullptr) {
-                std::string msg(u::format("[%s I] => ", now().c_str()));
+                std::string msg(u::string::styled_string(u::format("[%s I] => ", now().c_str()), u::string::fore_blue));
                 va_list arg;
                 va_start(arg, format);
                 msg.append(va_format(format, arg));
@@ -520,7 +505,7 @@ namespace u {
         template <unsigned short flag = (u::D | 0x7F00)>
         static std::ostream& warning(const char* format, ...) {
             if (opened() && format != nullptr) {
-                std::string msg(u::format("[%s W] => ", now().c_str()));
+                std::string msg(u::string::styled_string(u::format("[%s W] => ", now().c_str()), u::string::fore_yellow));
                 va_list arg;
                 va_start(arg, format);
                 msg.append(va_format(format, arg));
@@ -528,12 +513,13 @@ namespace u {
                 msg.append("\n");
                 print(msg, flag);
             }
+	    return std::cout;
         }
 
         template <unsigned short flag = (u::D | 0xFF00)>
         static std::ostream& error(const char* format, ...) {
             if (opened() && format != nullptr) {
-                std::string msg(u::format("[%s E] => ", now().c_str()));
+                std::string msg(u::string::styled_string(u::format("[%s E] => ", now().c_str()), u::string::fore_cyan));
                 va_list arg;
                 va_start(arg, format);
                 msg.append(va_format(format, arg));
@@ -547,7 +533,7 @@ namespace u {
         template <unsigned short flag = (u::D | 0xFF00)>
         static std::ostream& fatal(const char*format, ...) {
             if (opened() && format != nullptr) {
-                std::string msg(u::format("[%s F] => ", now().c_str()));
+                std::string msg(u::string::styled_string(u::format("[%s F] => ", now().c_str()), u::string::fore_red));
                 va_list arg;
                 va_start(arg, format);
                 msg.append(va_format(format, arg));
@@ -562,8 +548,9 @@ namespace u {
             return u::timer::now(fmt);
         }
 
-#define u_fun_enter(a,b) {u::log::debug(a, b, "[%s:%d `%s`] enter", __FILE__, __LINE__, __FUNCTION__);}
-#define u_fun_exit(a,b) {u::log::debug(a, b, "[%s:%d `%s`] exit", __FILE__, __LINE__, __FUNCTION__);}
+#define u_fun_enter(a,b) {u::log::debug(a, b, "[%s:%d `%s`] ENTER", __FILE__, __LINE__, __FUNCTION__);}
+#define u_fun_exit(a,b) {u::log::debug(a, b, "[%s:%d `%s`] EXIT", __FILE__, __LINE__, __FUNCTION__);}
+#define u_fun_here(a,b) {u::log::debug(a, b, "[%s:%d `%s`] HERE", __FILE__, __LINE__, __FUNCTION__);}
 
 /*
  * @function u_assert: assert whether @expr is true or not
