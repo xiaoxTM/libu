@@ -29,12 +29,12 @@ namespace u {
     {
         static float _succeed;
         static float _failure;
-        static bool _init;
         static unsigned char _flag;
         // flag representation:
         // _flag: 00000000
-        //              ||- current time
-        //              |- time used (runned time)
+        //             |||- current time
+        //             ||- time used (runned time)
+        //             |- initialization
     };
 
     template<typename static_members>
@@ -44,17 +44,15 @@ namespace u {
     float checker_static_holder<static_members>::_failure;
 
     template<typename static_members>
-    bool checker_static_holder<static_members>::_init;
-
-    template<typename static_members>
     unsigned char checker_static_holder<static_members>::_flag;
 
     class checker : public checker_static_holder<void> {
     private:
-        static void init(bool show_current_time=true, bool show_run_time=true) {
+        static void init(bool show_current_time=true, bool show_run_time=false) {
             _succeed = 0;
             _failure = 0;
-            _init = true;
+            _flag = 0;
+            _flag = 0x08;
             current_time(show_current_time);
             run_time(show_run_time);
         }
@@ -62,9 +60,9 @@ namespace u {
 
         static void current_time(bool show) {
             if (show) {
-                _flag = ((_flag & 0xFE) | 0x01);
+                _flag |= 0x01;
             } else {
-                _flag = (_flag & 0xFE);
+                _flag &= 0xFE;
             }
         }
 
@@ -74,9 +72,9 @@ namespace u {
 
         static void run_time(bool show) {
             if (show) {
-                _flag = ((_flag & 0xFD) | 0x02);
+                _flag |= 0x02;
             } else {
-                _flag = (_flag & 0xFD);
+                _flag &= 0xFD;
             }
         }
 
@@ -84,12 +82,16 @@ namespace u {
             return ((_flag & 0x02) == 0x02);
         }
 
+        static bool initialized() {
+            return ((_flag & 0x08) == 0x08);
+        }
+
         static bool begin(bool express) {
-            if (!_init) {
+            if (!initialized()) {
                 init();
             }
             if (current_time()) {
-                std::cout << "[" <<u::timer::now() << "]" << std::flush;
+                std::cout << "[" <<u::timer::now() << " C]" << std::flush;
             }
             if (express) {
                 _succeed += 1;
@@ -105,9 +107,9 @@ namespace u {
 
         static std::ostream &end(bool express, const std::string &expr, const std::string &assert_function, const std::string &file, const int line, bool newline=true) {
             if (run_time()) {
-                std::cout << " +"<< u::timer::end() << "(s) ";
+                std::cout << " +"<< u::timer::end() << "(s)";
             }
-            std::cout << "`" << u::string::styled_string(expr, u::string::fore_blue) << "` #" << assert_function << " @" << file  << "(" << line << ")# ==> ";
+            std::cout << " `" << u::string::styled_string(expr, u::string::fore_blue) << "` #" << assert_function << " @" << file  << "(" << line << ")# ==> ";
             if (express) {
                 std::cout << u::string::styled_string("SUCCEED", u::string::fore_green) << std::flush;
             } else {
@@ -121,14 +123,14 @@ namespace u {
 
 #ifndef u_check
 #define u_check(expr, newline)	\
-  {u::timer::begin();(u::checker::begin((expr)			\
+  {u::timer::begin();(u::checker::begin((expr))			\
    ? u::checker::end(true, #expr, __ASSERT_FUNCTION, __FILE__, __LINE__, newline) \
    : u::checker::end(false, #expr, __ASSERT_FUNCTION, __FILE__, __LINE__, newline));}
 #endif
 
 #ifndef u_ncheck
 #define u_ncheck(expr)	\
-  {u::timer::begin();(u::checker::begin(expr)			\
+  {u::timer::begin();(u::checker::begin((expr))			\
    ? u::checker::end(true, #expr, __ASSERT_FUNCTION, __FILE__, __LINE__, true) \
    : u::checker::end(false, #expr, __ASSERT_FUNCTION, __FILE__, __LINE__, true));}
 #endif
