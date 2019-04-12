@@ -1,0 +1,10 @@
+#ifndef __OCV_HPP__
+#define __OCV_HPP__
+
+#include "opencv/threshold"
+#include "opencv/shape-detection"
+#include "opencv/draw"
+#include "opencv/image-process"
+#include "opencv/base"
+
+#endif

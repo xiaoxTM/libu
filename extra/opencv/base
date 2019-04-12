@@ -1,0 +1,5 @@
+#ifndef __OCV_BASE_HPP__
+
+#include "inc/base.hpp"
+
+#endif

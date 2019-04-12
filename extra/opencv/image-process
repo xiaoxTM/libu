@@ -1,0 +1,5 @@
+#ifndef __OCV_IMAGE_PROCESS_HPP__
+
+#include "inc/image-process.hpp"
+
+#endif

@@ -1,0 +1,5 @@
+#ifndef __OCV_SHAPE_DETECTION_HPP__
+
+#include "inc/shape-detection.hpp"
+
+#endif

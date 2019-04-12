@@ -1,0 +1,5 @@
+#ifndef __OCV_DRAW_HPP__
+
+#include "inc/draw.hpp"
+
+#endif
