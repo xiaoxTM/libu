@@ -144,9 +144,16 @@ namespace u {
             return ret;
         }
 
+//        template <typename T>
+//        static bool get(const std::map<std::string, std::string> &map, const char *key, T &value) {
+//            return get(map, key, value);
+//        }
+        
         template <typename T>
-        static bool get(const std::map<std::string, std::string> &map, const char *key, T &value) {
-            return get(map, key, value);
+        static T get(const std::map<std::string, std::string> &map, const char *key) {
+            T value;
+            assert(get(map, key, value));
+            return value;
         }
 
         template <typename T>

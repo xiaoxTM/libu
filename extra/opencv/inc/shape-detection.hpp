@@ -15,7 +15,7 @@ namespace u {
             CIRCLE
         };
 
-        int shape_detection(const std::vector<cv::Point> &contour, double scale=0.01, bool closed=true) {
+        int detect_shape(const std::vector<cv::Point> &contour, double scale=0.01, bool closed=true) {
             double peri = cv::arcLength(contour, closed);
             cv::Mat approx;
             cv::approxPolyDP(contour, approx, scale * peri, closed); // 0.01 ~ 0.05

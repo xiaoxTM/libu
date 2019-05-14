@@ -61,6 +61,7 @@ double threshold_with_mask(cv::InputArray _src, cv::OutputArray _dst,
     CV_Assert(src.channels() == 1);
     _dst.create(src.size(), src.type());
     cv::Mat dst = _dst.getMat();
+    dst.setTo(0);
     CV_Assert(src.data != dst.data);  // no inplace processing
     cv::Mat mask = _mask.getMat();
 
@@ -115,6 +116,7 @@ void niblack_threshold(cv::InputArray _src, cv::OutputArray _dst, double maxValu
     // prepare output image
     _dst.create(src.size(), src.type());
     cv::Mat dst = _dst.getMat();
+    dst.setTo(0);
     CV_Assert(src.data != dst.data);  // no inplace processing
 
     // apply thresholding: ( pixel > threshold ) ? foreground : background
@@ -163,6 +165,7 @@ void hierarchy_threshold(cv::InputArray _src, cv::OutputArray _dst,
 
     _dst.create(src.size(), src.type());
     cv::Mat dst = _dst.getMat();
+    dst.setTo(0);
     CV_Assert(src.data != dst.data);  // no inplace processing
 
     cv::Mat mask;

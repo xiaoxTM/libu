@@ -7,8 +7,15 @@
 namespace u {
     namespace ocv {
 
+        void polylines(cv::InputOutputArray image, const std::vector<cv::Point> &contour,
+                       bool isclosed, const cv::Scalar &color,
+                       int thick=1, int linetype=cv::LINE_8, int shift=0) {
+             std::vector<std::vector<cv::Point>> lines(1, contour);
+             cv::polylines(image, lines, isclosed, color, thick, linetype, shift);
+        }
+
         void draw_contour(cv::OutputArray _dst, const std::vector<cv::Point> &contour,
-                          cv::Scalar value, bool fill=true) {
+                          const cv::Scalar &value, bool fill=true) {
             cv::Mat dst = _dst.getMat();
             CV_Assert(!dst.empty());
             CV_Assert(dst.type() == CV_8UC3 || dst.type() == CV_8UC1);
@@ -44,14 +51,15 @@ namespace u {
         }
 
         void draw_contour(cv::OutputArray _dst, const std::vector<std::vector<cv::Point>> &contours,
-                          cv::Size size,  int type, cv::Scalar value, bool fill=true) {
+                          const cv::Size &size,  int type, const cv::Scalar &value, bool fill=true) {
             _dst.create(size, type);
             for (auto &contour : contours) {
                 draw_contour(_dst, contour, value, fill);
             }
         }
 
-        cv::Mat draw_contour(const std::vector<std::vector<cv::Point>> &contours, cv::Size size,  int type, cv::Scalar value, bool fill=true) {
+        cv::Mat draw_contour(const std::vector<std::vector<cv::Point>> &contours, const cv::Size &size,
+                             int type, const cv::Scalar &value, bool fill=true) {
             cv::Mat dst = cv::Mat::zeros(size, type);
             for (auto &contour : contours) {
                 draw_contour(dst, contour, value, fill);
